@@ -1,8 +1,10 @@
+# main/models.py
 from django.db import models
 
-# Create your models here.
-
-class Case(models.Model):
-    case_id = models.CharField(max_length=12, unique=True)
-    is_active = models.BooleanField(default=True)
+class UserSubmission(models.Model):
+    name = models.CharField(max_length=100)
+    unique_number = models.CharField(max_length=20, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.unique_number}"

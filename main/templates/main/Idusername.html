@@ -1,0 +1,44 @@
+<!-- main/templates/main/name_collection.html -->
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-person-circle fs-1"></i>
+                        <h2 class="h4 mt-2">Enter Your Full Name</h2>
+                    </div>
+
+                    <!-- Messages -->
+                    {% if messages %}
+                    <div class="alert alert-success">
+                        {% for message in messages %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <input type="text" 
+                                   class="form-control form-control-lg" 
+                                   name="full_name"
+                                   placeholder="John Doe"
+                                   required
+                                   autocomplete="off">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            Continue
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

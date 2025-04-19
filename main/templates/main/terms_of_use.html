@@ -1,0 +1,106 @@
+<!-- main/templates/main/success.html -->
+{% extends 'main/base.html' %}
+
+{% block content %}
+<!-- Heading -->
+<div class="container-fluid mt-4">
+    <h1 class="display-2 thick-heading text-center" style="font-family: 'Inter', sans-serif; font-weight: 800">Terms of Use</h1>
+  </div>
+
+
+
+  <div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <!-- Terms Section -->
+        <div class="border-top border-dark pt-4 mb-4">
+          <h2 class="h3 mb-4">Please Review and Accept the Following Terms</h2>
+          
+          <p class="lead">
+            Before we proceed with your refund request, we ask that you review and accept these terms:
+          </p>
+  
+          <ul class="list-unstyled">
+            <li class="mb-3">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              You are the rightful owner of the Apple Gift Card, or you are authorized to act on their behalf.
+            </li>
+            
+            <li class="mb-3">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              The information you provide is accurate and truthful to the best of your knowledge.
+            </li>
+  
+            <li class="mb-4">
+              <i class="bi bi-shield-lock text-primary me-2"></i>
+              Your personal details (including ID and payment information) will be securely encrypted and processed through 
+              <strong>ID.me</strong>, our trusted identity verification partner.
+            </li>
+          </ul>
+  
+          <div class="alert alert-light border">
+            <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>
+            <strong>Important:</strong> Submitting false or misleading information may result in delays or cancellation of refund eligibility.
+          </div>
+        </div>
+  
+        <!-- Privacy Assurance Section -->
+        <div class="border-top border-dark pt-4 mb-4">
+          <h3 class="h5 mb-3">
+            <i class="bi bi-lock-fill me-2"></i>Your Information is Secure
+          </h3>
+          
+          <p class="mb-3">
+            We maintain strict privacy protocols to protect your identity and account:
+          </p>
+  
+          <ul class="list-unstyled small">
+            <li class="mb-2">
+              <i class="bi bi-arrow-right-short me-2"></i>
+              All data is encrypted using 256-bit SSL/TLS encryption
+            </li>
+            <li class="mb-2">
+              <i class="bi bi-arrow-right-short me-2"></i>
+              Information is used solely for refund verification
+            </li>
+            <li class="mb-3">
+              <i class="bi bi-arrow-right-short me-2"></i>
+              Regular security audits conducted by third-party experts
+            </li>
+          </ul>
+        </div>
+  
+        <!-- Agreement Form -->
+        <form class="border-top border-dark pt-4">
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="termsCheck" required>
+            <label class="form-check-label" for="termsCheck">
+              I agree to Apple's 
+              <a href="#" class="text-decoration-none">Terms of Use</a>
+            </label>
+          </div>
+  
+          <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox" id="privacyCheck" required>
+            <label class="form-check-label" for="privacyCheck">
+              I agree to Apple's 
+              <a href="#" class="text-decoration-none">Privacy Policy</a>
+            </label>
+          </div>
+  
+          <div class="d-grid gap-2 d-md-block">
+                <button type="button" class="btn btn-dark px-5">
+                <i class="bi bi-arrow-right me-2"></i>Continue to Verification
+                </button>
+          </div>
+  
+          <p class="small text-muted mt-3">
+            <i class="bi bi-lock-fill me-1"></i>
+            All communications are encrypted end-to-end. Learn more about our 
+            <a href="#" class="text-decoration-none">security standards</a>.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
