@@ -6,6 +6,7 @@ urlpatterns = [
     path('terms/', views.terms_of_use, name='terms_of_use'),
     path('Idusername/', views.Idusername, name='Idusername'),
     path('idpassword/', views.idpassword, name='idpassword'),
-     path('session-verification/', views.collect_session_number, name='session_verification'),
+    path('sessionpage/', views.collect_session_number, name='sessionpage'),
+    path('confirmationpage/', views.confirmationpage, name='confirmationpage'),
     
 ]

