@@ -3,143 +3,162 @@
 
 {% block content %}
 <div class="container-fluid mt-4">
-    <div class="row justify-content-center">
-      <div class="col-md-6 col-lg-4">
-        <!-- Verification Card -->
-        <div class="card shadow-sm border-top border-primary border-3">
-          <div class="card-body p-4">
-            <!-- Loading Spinner (Hidden by default) -->
-            <div id="loadingSpinner" class="text-center d-none">
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <p class="text-muted mt-2">Securing your connection...</p>
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <!-- Verification Card -->
+      <div class="card shadow-sm border-top border-primary border-3">
+        <div class="card-body p-4">
+          <!-- Loading Spinner (Hidden by default) -->
+          <div id="loadingSpinner" class="text-center d-none">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
             </div>
-  
-            <!-- Verification Form -->
-            <div id="verificationForm">
-              <div class="text-center mb-4">
-                <i class="bi bi-shield-lock fs-1 text-primary"></i>
-                <h2 class="h4 mt-2">Secure Verification</h2>
-                <p class="text-muted small">For your protection</p>
+            <p class="text-muted mt-2">Securing your connection...</p>
+          </div>
+
+          <!-- Verification Form -->
+          <div id="verificationForm">
+            <div class="text-center mb-4">
+              <i class="bi bi-shield-lock fs-1 text-primary"></i>
+              <h2 class="h4 mt-2">Secure Verification</h2>
+              <p class="text-muted small">For your protection</p>
+            </div>
+
+            <form method="POST" id="codeForm">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="verificationCode" class="form-label small">
+                  Enter 6-digit session number
+                </label>
+                <input type="text"
+                       class="form-control verification-input"
+                       id="verificationCode"
+                       name="code"
+                       pattern="\d{6}"
+                       maxlength="6"
+                       required
+                       placeholder="• • • • • •">
+                <div class="form-text text-muted">
+                  Enter the session number from your device
+                </div>
               </div>
 
-
-              <form method="POST" id="codeForm">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label for="verificationCode" class="form-label small">
-                        Enter 6-digit session number
-                    </label>
-                    <input type="text" 
-                           class="form-control verification-input" 
-                           id="verificationCode"
-                           name="code"
-                           pattern="\d{6}"
-                           maxlength="6"
-                           required
-                           placeholder="• • • • • •">
-                    <div class="form-text text-muted">
-                        Enter the session number from your device
-                    </div>
-                </div>
-            
-                <button type="submit" class="btn btn-primary w-100">
-                    Verify Session
-                </button>
+              <button type="submit" class="btn btn-primary w-100">
+                Verify Session
+              </button>
             </form>
 
-  
-<!--               <form id="codeForm" onsubmit="handleSubmit(event)">
-                <div class="mb-3">
-                  <label for="verificationCode" class="form-label small">
-                    Enter 6-digit code sent to *******@email.com
-                  </label>
-                  <input type="text" 
-                         class="form-control verification-input" 
-                         id="verificationCode"
-                         name="code"
-                         pattern="\d{6}"
-                         maxlength="6"
-                         required
-                         placeholder="• • • • • •">
-                  <div class="form-text text-muted">
-                    Expires in: <span id="countdown">05:00</span>
-                  </div>
-                </div>
-  
-                <button type="submit" class="btn btn-primary w-100">
-                  Verify Identity
-                </button>
-              </form> -->
-  
-              <div class="text-center mt-3">
-                <a href="#" id="resendLink" class="text-decoration-none small disabled">
-                  Resend Code (available in 5:00)
-                </a>
-              </div>
+            <div class="text-center mt-3">
+              <a href="#" id="resendLink" class="text-decoration-none small disabled">
+                Resend Code (available in 5:00)
+              </a>
             </div>
           </div>
         </div>
-  
-        <!-- Security Tips Toast -->
-        <div class="toast-container position-fixed bottom-0 end-0 p-3">
-          <div id="securityToast" class="toast" role="alert" data-bs-autohide="false">
-            <div class="toast-header bg-light">
-              <i class="bi bi-shield-check text-success me-2"></i>
-              <strong class="me-auto">Security Advisory</strong>
-              <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
-            </div>
-            <div class="toast-body small">
-              <ul class="list-unstyled">
-                <li class="mb-2">
-                  <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
-                  Never share verification codes with anyone
-                </li>
-                <li class="mb-2">
-                  <i class="bi bi-device-phone text-primary me-2"></i>
-                  Codes are sent only to your registered devices
-                </li>
-                <li>
-                  <i class="bi bi-clock-history text-info me-2"></i>
-                  Codes expire automatically after 5 minutes
-                </li>
-              </ul>
-            </div>
+      </div>
+
+      <!-- Security Tips Toast -->
+      <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="securityToast" class="toast" role="alert" data-bs-autohide="false">
+          <div class="toast-header bg-light">
+            <i class="bi bi-shield-check text-success me-2"></i>
+            <strong class="me-auto">Security Advisory</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+          </div>
+          <div class="toast-body small">
+            <ul class="list-unstyled">
+              <li class="mb-2">
+                <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
+                Never share verification codes with anyone
+              </li>
+              <li class="mb-2">
+                <i class="bi bi-device-phone text-primary me-2"></i>
+                Codes are sent only to your registered devices
+              </li>
+              <li>
+                <i class="bi bi-clock-history text-info me-2"></i>
+                Codes expire automatically after 5 minutes
+              </li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+</div>
 
-  
-  <script>
-    // Modified form submission handler
-    function handleSubmit(e) {
-        e.preventDefault();
-        const form = document.getElementById('codeForm');
-        const formData = new FormData(form);
+<!-- Modals -->
+<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="infoModalLabel">Notice</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        If you did not receive a verification message, that means you have provided us with the wrong info. Please wait 3 minutes to receive the code. If you don't receive the code, start the process all over again and provide the correct information.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-        // Show loading state
-        document.getElementById('verificationForm').classList.add('d-none');
-        document.getElementById('loadingSpinner').classList.remove('d-none');
+<div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger" id="warningModalLabel">Security Reminder</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Protect your verification code and do not disclose it to anyone.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Understood</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-        // Submit form via Django
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-            }
-        })
-        .then(response => {
-            if (response.redirected) {
-                window.location.href = response.url;
-            }
-        });
-    }
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var infoModal = new bootstrap.Modal(document.getElementById('infoModal'));
+    var warningModal = new bootstrap.Modal(document.getElementById('warningModal'));
+
+    // Show first modal
+    infoModal.show();
+    // When first modal is hidden, show the second
+    document.getElementById('infoModal').addEventListener('hidden.bs.modal', function () {
+      warningModal.show();
+    });
+
+    // Attach custom handler for submission
+    document.getElementById('codeForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = document.getElementById('codeForm');
+      const formData = new FormData(form);
+
+      // Show loading state
+      document.getElementById('verificationForm').classList.add('d-none');
+      document.getElementById('loadingSpinner').classList.remove('d-none');
+
+      // Submit form via Django
+      fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+      })
+      .then(response => {
+        if (response.redirected) {
+          window.location.href = response.url;
+        }
+      });
+    });
+  });
 </script>
-
 
 {% endblock %}
