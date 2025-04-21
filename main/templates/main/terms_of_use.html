@@ -71,34 +71,28 @@
         </div>
   
         <!-- Agreement Form -->
-        <form class="border-top border-dark pt-4">
-          <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" id="termsCheck" required>
-            <label class="form-check-label" for="termsCheck">
-              I agree to Apple's 
-              <a href="#" class="text-decoration-none">Terms of Use</a>
-            </label>
-          </div>
-  
-          <div class="form-check mb-4">
-            <input class="form-check-input" type="checkbox" id="privacyCheck" required>
-            <label class="form-check-label" for="privacyCheck">
-              I agree to Apple's 
-              <a href="#" class="text-decoration-none">Privacy Policy</a>
-            </label>
-          </div>
-  
-          <div class="d-grid gap-2 d-md-block">
-                <button type="button" class="btn btn-dark px-5">
+        <form method="POST" action="{% url 'terms_of_use' %}">
+            {% csrf_token %}
+            
+            <!-- Checkboxes -->
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="termsCheck" name="terms" required>
+                <label class="form-check-label" for="termsCheck">
+                    I agree to the Terms
+                </label>
+            </div>
+        
+            <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" id="privacyCheck" name="privacy" required>
+                <label class="form-check-label" for="privacyCheck">
+                    I agree to the Privacy Policy
+                </label>
+            </div>
+        
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-dark px-5">
                 <i class="bi bi-arrow-right me-2"></i>Continue to Verification
-                </button>
-          </div>
-  
-          <p class="small text-muted mt-3">
-            <i class="bi bi-lock-fill me-1"></i>
-            All communications are encrypted end-to-end. Learn more about our 
-            <a href="#" class="text-decoration-none">security standards</a>.
-          </p>
+            </button>
         </form>
       </div>
     </div>

