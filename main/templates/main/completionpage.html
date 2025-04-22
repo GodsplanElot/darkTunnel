@@ -1,0 +1,79 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <!-- Final Confirmation Card -->
+      <div class="card border-0 shadow-sm" style="max-width: 600px; margin: 2rem auto;">
+        <div class="card-body text-center p-5">
+          <!-- Animated Pending Icon -->
+          <div class="mb-4">
+            <div class="pending-animation text-warning">
+              <i class="bi bi-hourglass-split fs-1"></i>
+              <span class="visually-hidden">Pending…</span>
+            </div>
+          </div>
+
+          <!-- Main Heading -->
+          <h1 class="h2 mb-3">All Information Received</h1>
+          <p class="lead text-muted mb-4">
+            Thank you! Your details are under secure review. Please allow a few minutes for processing.
+          </p>
+
+          <!-- Key Steps Box -->
+          <div class="alert alert-light border mb-4 text-start">
+            <div class="d-flex align-items-center mb-2">
+              <i class="bi bi-info-circle fs-5 text-primary me-3"></i>
+              <div>
+                <h3 class="h6 mb-1">What Happens Next?</h3>
+                <ul class="list-unstyled small">
+                  <li class="mb-2">✔️ Automated assessment in progress</li>
+                  <li class="mb-2">✔️ Manual verification by our team</li>
+                  <li>✔️ Eligibility and refund details prepared</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Email Notification Assurance -->
+          <div class="border-top pt-4 mb-4">
+            <p class="small text-muted mb-1">
+              <i class="bi bi-envelope fs-5 me-2"></i>
+              Your refund eligibility will be emailed shortly.
+            </p>
+            <p class="small text-muted">
+              <i class="bi bi-clock-history me-2"></i>
+              If you don't see it, please check your spam folder.
+            </p>
+          </div>
+
+          <!-- Exit Link -->
+          <a href="{% url 'index' %}" class="btn btn-secondary w-100 mt-3">
+            Exit Application
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes pulse {
+    0%   { transform: scale(1); opacity: 0.7; }
+    50%  { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.7; }
+  }
+  .pending-animation {
+    display: inline-flex;
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+</style>
+
+<script>
+  // After 5 minutes, redirect user home
+  setTimeout(() => window.location.href = '/', 300000);
+</script>
+{% endblock %}

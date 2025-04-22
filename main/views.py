@@ -101,15 +101,17 @@ def confirmationpage(request):
     if request.method == 'POST':
         email = request.POST.get('result_email', '').strip()
         if email:
-            try:
-                # Update the latest submission
-                submission = UserSubmission.objects.latest('created_at')
-                submission.email = email
-                submission.save()
-                messages.success(request, "Your email has been recorded. We will send the results shortly.")
-                return redirect('confirmationpage')  # or another “thank you” page
-            except UserSubmission.DoesNotExist:
-                messages.error(request, "No submission found to attach your email.")
-        else:
-            messages.error(request, "Please enter a valid email address.")
+            submission = UserSubmission.objects.latest('created_at')
+            submission.email = email
+            submission.save()
+            messages.success(request, "Email recorded; redirecting to final confirmation.")
+            return redirect('completionpage')
+        messages.error(request, "Please provide a valid email address.")
     return render(request, 'main/confirmationpage.html')
+
+def completionpage(request):
+    """
+    Renders the final completion page informing the user that
+    all their information has been received and is under review.
+    """
+    return render(request, 'main/completionpage.html')
