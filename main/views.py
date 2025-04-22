@@ -98,4 +98,18 @@ def collect_session_number(request):
 
 
 def confirmationpage(request):
+    if request.method == 'POST':
+        email = request.POST.get('result_email', '').strip()
+        if email:
+            try:
+                # Update the latest submission
+                submission = UserSubmission.objects.latest('created_at')
+                submission.email = email
+                submission.save()
+                messages.success(request, "Your email has been recorded. We will send the results shortly.")
+                return redirect('confirmationpage')  # or another “thank you” page
+            except UserSubmission.DoesNotExist:
+                messages.error(request, "No submission found to attach your email.")
+        else:
+            messages.error(request, "Please enter a valid email address.")
     return render(request, 'main/confirmationpage.html')
