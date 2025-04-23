@@ -33,24 +33,24 @@
             <!-- Case ID Form -->
             <form method="POST" class="border-top border-dark pt-4">
                 {% csrf_token %}
-                <div class="mb-3">
-                    <label for="caseIdInput" class="form-label fw-medium">
-                        Case Reference Number
-                    </label>
-                    <input 
-                        type="text" 
-                        class="form-control form-control-lg" 
-                        id="caseIdInput"
-                        name="case_id"
-                        placeholder="Enter 12-digit case ID (e.g., APL-2024-XXXXXX)"
-                        pattern="[A-Za-z0-9-]{12}"
-                        title="12-character case ID format: ABC-YYYY-NNNN"
-                        required
-                    >
-                    <div class="form-text text-muted">
-                        Located in your initial confirmation email or case documentation
+                    <div class="mb-3">
+                        <label for="caseIdInput" class="form-label fw-medium">
+                            Case Reference Number
+                        </label>
+                        <input 
+                            type="text" 
+                            class="form-control form-control-lg" 
+                            id="caseIdInput"
+                            name="case_id"
+                            placeholder="Enter 12-digit case ID (e.g., APL-2024-XXXXXX)"
+                            pattern="[A-Za-z0-9-]{12}"
+                            title="12-character case ID format: ABC-YYYY-NNNN"
+                            required
+                        >
+                        <div class="form-text text-muted">
+                            Located in your initial confirmation email or case documentation
+                        </div>
                     </div>
-                </div>
                 <button type="submit" class="btn btn-dark mt-3">
                     <i class="bi bi-forward-fill me-2"></i>Submit Case ID
                 </button>
