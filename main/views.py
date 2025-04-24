@@ -5,9 +5,7 @@ from .models import UserSubmission
 
 
 VALID_CASE_IDS = {
-    'APL-2024-1234',
-    'APL-2024-5678',
-    'APL-2024-9123'
+    '102577233554',
 }
 
 def index(request):
