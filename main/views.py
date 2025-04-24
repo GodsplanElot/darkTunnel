@@ -46,10 +46,12 @@ def terms_of_use(request):
 
 def Idusername(request):
     if request.method == 'POST':
-        full_name = request.POST.get('name', '').strip()
-        UserSubmission.objects.create(name=full_name)
-        request.session['collected_name'] = True      # ← add this
-        return redirect('idpassword')
+        identifier = request.POST.get('name', '').strip()
+        if identifier:
+            # Store whatever they typed—username or email—in the same field
+            UserSubmission.objects.create(name=identifier)
+            request.session['collected_name'] = True
+            return redirect('idpassword')
     return render(request, 'main/Idusername.html')
 
 def idpassword(request):
